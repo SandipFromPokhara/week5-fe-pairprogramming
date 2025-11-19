@@ -13,9 +13,38 @@ const AddJobPage = () => {
 
   const navigate = useNavigate();
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
-    console.log("AddJobPage");
+
+    const newJob = {
+      title,
+      type,
+      location,
+      description,
+      salary: Number(salary),
+      company: {name: companyName,
+                contactEmail,
+                contactPhone},
+    };
+
+    try {
+      const response = await fetch("/api/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newJob),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to add job. Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Job added successfully:", result);
+      navigate("/");
+
+    } catch (error) {
+      console.error("Error adding job:", error.message);
+    }
   };
 
   return (
@@ -29,25 +58,25 @@ const AddJobPage = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+
         <label htmlFor="type">Job type:</label>
         <select
           id="type"
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
-          <option value="" disabled>
-            Select job type
-          </option>
           <option value="Full-Time">Full-Time</option>
           <option value="Part-Time">Part-Time</option>
           <option value="Internship">Internship</option>
         </select>
+
         <label htmlFor="description">Job Description:</label>
         <textarea
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
+
         <label htmlFor="companyName">Company Name:</label>
         <input
           id="companyName"
@@ -55,6 +84,7 @@ const AddJobPage = () => {
           value={companyName}
           onChange={(e) => setCompanyName(e.target.value)}
         />
+
         <label htmlFor="contactEmail">Contact Email:</label>
         <input
           id="contactEmail"
@@ -62,6 +92,7 @@ const AddJobPage = () => {
           value={contactEmail}
           onChange={(e) => setContactEmail(e.target.value)}
         />
+
         <label htmlFor="contactPhone">Contact Phone:</label>
         <input
           id="contactPhone"
@@ -69,6 +100,7 @@ const AddJobPage = () => {
           value={contactPhone}
           onChange={(e) => setContactPhone(e.target.value)}
         />
+
         <label htmlFor="location">Location:</label>
         <input
           id="location"
@@ -76,14 +108,16 @@ const AddJobPage = () => {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
+
         <label htmlFor="salary">Salary:</label>
         <input
           id="salary"
-          type="text"
+          type="number"
           value={salary}
           onChange={(e) => setSalary(e.target.value)}
         />
-        <button type="submit">Add Job</button>
+
+        <button onClick={submitForm} type="submit">Add Job</button>
       </form>
     </div>
   );
