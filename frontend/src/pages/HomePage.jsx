@@ -7,7 +7,7 @@ const Home = () => {
   useEffect(() => {
     const fetchJobs = async () =>{
       try{
-        const response = await fetch("http://localhost:4000/api/jobs");
+        const response = await fetch("/api/jobs");
          if(!response){
           res.status(500).json({"error": error.message});
          }
