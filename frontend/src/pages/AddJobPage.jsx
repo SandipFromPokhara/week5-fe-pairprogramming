@@ -117,7 +117,7 @@ const AddJobPage = () => {
           onChange={(e) => setSalary(e.target.value)}
         />
 
-        <button onClick={submitForm} type="submit">Add Job</button>
+        <button type="submit">Add Job</button>
       </form>
     </div>
   );
