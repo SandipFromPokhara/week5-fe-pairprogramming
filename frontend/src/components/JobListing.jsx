@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import JobPage from "../pages/JobPage";
+
 const JobListing = ({ id, title, type, description, company }) => {
   return (
     <div className="job-preview">
